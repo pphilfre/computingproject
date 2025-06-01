@@ -1,0 +1,316 @@
+{
+  "gameInfo": {
+    "gameTitle": "The Obsidian Labyrinth",
+    "version": "1.0",
+    "welcomeMessage": "Welcome, adventurer, to the Obsidian Labyrinth! Explore the mysterious chambers, solve ancient puzzles, and find your way out before it's too late.",
+    "helpText": "Commands:\n- GO [direction]: Move in a direction (north, south, east, west, up, down)\n- TAKE [item]: Pick up an item\n- DROP [item]: Drop an item from your inventory\n- USE [item] ON [target]: Use an item on something\n- EXAMINE [object]: Look closely at an object\n- TALK TO [npc]: Talk to a character\n- COMBINE [item1] AND [item2]: Combine two items\n- INVENTORY: Show what you're carrying\n- LOOK: Look around\n- SAVE [name]: Save your game\n- LOAD [name]: Load a saved game\n- HELP: Show this help text\n- QUIT: Exit the game"
+  },
+  "playerStart": {
+    "startRoomId": "antechamber",
+    "initialInventory": ["torch_unlit"]
+  },
+  "rooms": {
+    "antechamber": {
+      "id": "antechamber",
+      "name": "Dusty Antechamber",
+      "baseDescription": "A small, dusty room. Cobwebs cling to the corners. A single wooden door is to the north.",
+      "itemIds": ["rusty_lever_unpulled"],
+      "npcIds": ["ghostly_guide"],
+      "exits": {
+        "north": {
+          "targetRoomId": "hall_of_echoes",
+          "isInitiallyLocked": true,
+          "lockedMessage": "The door is bolted shut.",
+          "requiredPuzzleIdSolved": "door_bolt_puzzle"
+        }
+      }
+    },
+    "hall_of_echoes": {
+      "id": "hall_of_echoes",
+      "name": "Hall of Echoes",
+      "baseDescription": "A long, dark hall where your footsteps echo strangely. Ancient symbols adorn the walls. Exits lead south and east.",
+      "itemIds": ["strange_brazier", "ancient_scroll"],
+      "npcIds": [],
+      "exits": {
+        "south": {
+          "targetRoomId": "antechamber",
+          "isInitiallyLocked": false
+        },
+        "east": {
+          "targetRoomId": "treasure_room",
+          "isInitiallyLocked": true,
+          "lockedMessage": "The iron door is locked with a heavy padlock.",
+          "requiredItemIdToUnlock": "brass_key"
+        }
+      }
+    },
+    "treasure_room": {
+      "id": "treasure_room",
+      "name": "Ancient Treasure Room",
+      "baseDescription": "A small chamber filled with the glint of gold and jewels. A shaft of light reveals an exit up to the surface.",
+      "itemIds": ["golden_idol"],
+      "npcIds": [],
+      "exits": {
+        "west": {
+          "targetRoomId": "hall_of_echoes",
+          "isInitiallyLocked": false
+        },
+        "up": {
+          "targetRoomId": "exit",
+          "isInitiallyLocked": false
+        }
+      }
+    },
+    "exit": {
+      "id": "exit",
+      "name": "Exit to the Surface",
+      "baseDescription": "Fresh air and sunlight stream in. You've found your way out of the Labyrinth!",
+      "itemIds": [],
+      "npcIds": [],
+      "exits": {}
+    }
+  },
+  "items": {
+    "torch_unlit": {
+      "id": "torch_unlit",
+      "name": "Unlit Torch",
+      "description": "A sturdy torch, perfect for illuminating dark places. It's not lit yet.",
+      "takeable": true,
+      "useEffects": {
+        "item:strange_brazier": {
+          "successMessage": "You light the torch in the brazier. It burns with a bright, steady flame.",
+          "consumesItem": true,
+          "setsFlagName": "torch_lit",
+          "setsFlagValue": "true",
+          "triggersPuzzleId": "lighting_puzzle"
+        }
+      }
+    },
+    "torch_lit": {
+      "id": "torch_lit",
+      "name": "Lit Torch",
+      "description": "A blazing torch that illuminates the darkness around you.",
+      "takeable": true
+    },
+    "rusty_lever_unpulled": {
+      "id": "rusty_lever_unpulled",
+      "name": "Rusty Lever",
+      "description": "An old, rusty lever embedded in the wall. It seems it could be pulled.",
+      "takeable": false,
+      "useEffects": {
+        "self:rusty_lever_unpulled": {
+          "successMessage": "You pull the rusty lever with a grunt. It moves slowly with a loud creaking sound.",
+          "triggersPuzzleId": "door_bolt_puzzle"
+        }
+      }
+    },
+    "strange_brazier": {
+      "id": "strange_brazier",
+      "name": "Stone Brazier",
+      "description": "An ancient stone brazier, filled with what looks like never-ending fuel. It's not currently lit.",
+      "takeable": false
+    },
+    "ancient_scroll": {
+      "id": "ancient_scroll",
+      "name": "Ancient Scroll",
+      "description": "A yellowed scroll with an inscription: 'The key to treasure lies in the flame's embrace.'",
+      "takeable": true
+    },
+    "brass_key": {
+      "id": "brass_key",
+      "name": "Brass Key",
+      "description": "An ornate brass key, warm to the touch. It looks like it would fit a heavy lock.",
+      "takeable": true
+    },
+    "golden_idol": {
+      "id": "golden_idol",
+      "name": "Golden Idol",
+      "description": "A beautiful golden statue of an ancient deity. It's quite valuable.",
+      "takeable": true
+    }
+  },
+  "npcs": {
+    "ghostly_guide": {
+      "id": "ghostly_guide",
+      "name": "Ghostly Guide",
+      "presenceDescription": "A translucent figure hovers nearby, watching you with curious eyes.",
+      "initialDialogueNodeId": "greeting",
+      "dialogueTree": {
+        "greeting": {
+          "text": "Greetings, mortal. Few venture into these ancient halls. What brings you to the Obsidian Labyrinth?",
+          "responses": [
+            {
+              "text": "I seek treasure.",
+              "targetNodeId": "treasure_response"
+            },
+            {
+              "text": "I'm lost and trying to find my way out.",
+              "targetNodeId": "lost_response"
+            },
+            {
+              "text": "Who are you?",
+              "targetNodeId": "who_are_you"
+            }
+          ]
+        },
+        "treasure_response": {
+          "text": "Ah, another treasure hunter. The riches here are guarded by ancient puzzles and traps. Be careful what you wish for.",
+          "responses": [
+            {
+              "text": "Can you help me find the treasure?",
+              "targetNodeId": "offer_help"
+            },
+            {
+              "text": "I can handle any traps.",
+              "targetNodeId": "confident_response"
+            }
+          ]
+        },
+        "lost_response": {
+          "text": "These halls have confounded many before you. Perhaps I can offer some guidance... for a price.",
+          "responses": [
+            {
+              "text": "What kind of price?",
+              "targetNodeId": "offer_help"
+            },
+            {
+              "text": "I'll find my own way, thanks.",
+              "targetNodeId": "decline_help"
+            }
+          ]
+        },
+        "who_are_you": {
+          "text": "I was once an explorer like you, until I became... trapped here. Now I guide those who pass through, for better or worse.",
+          "responses": [
+            {
+              "text": "That sounds terrible.",
+              "targetNodeId": "sympathy"
+            },
+            {
+              "text": "Can you help me navigate this place?",
+              "targetNodeId": "offer_help"
+            }
+          ]
+        },
+        "sympathy": {
+          "text": "It's not so bad. Eternity gives one time to think. But enough about me - you need to find your way forward.",
+          "responses": [
+            {
+              "text": "Will you help me?",
+              "targetNodeId": "offer_help"
+            }
+          ]
+        },
+        "offer_help": {
+          "text": "I can tell you that fire illuminates more than just darkness. Light the brazier in the next room, and you may find what you seek.",
+          "setsNpcFlag": "offered_help=true",
+          "responses": [
+            {
+              "text": "Thank you for the hint.",
+              "targetNodeId": "farewell"
+            },
+            {
+              "text": "Is there anything else you can tell me?",
+              "targetNodeId": "more_info"
+            }
+          ]
+        },
+        "confident_response": {
+          "text": "Your confidence may be your undoing. But I admire your spirit. Remember that sometimes the simplest solution is the correct one.",
+          "responses": [
+            {
+              "text": "Thanks for the advice.",
+              "targetNodeId": "farewell"
+            }
+          ]
+        },
+        "decline_help": {
+          "text": "Very well. May fortune favor you, traveler. You'll need it.",
+          "endsDialogue": true
+        },
+        "more_info": {
+          "text": "The exit is beyond the treasure room. But beware - not all that glitters should be taken.",
+          "responses": [
+            {
+              "text": "I'll keep that in mind.",
+              "targetNodeId": "farewell"
+            }
+          ]
+        },
+        "farewell": {
+          "text": "Good luck on your journey. Perhaps we'll speak again... if you survive.",
+          "endsDialogue": true
+        }
+      },
+      "initialItemIds": [],
+      "initialNpcFlags": {
+        "offered_help": "false"
+      }
+    }
+  },
+  "puzzles": {
+    "door_bolt_puzzle": {
+      "id": "door_bolt_puzzle",
+      "description": "The rusty lever seems connected to the bolted door.",
+      "solutionCondition": {
+        "type": "ITEM_USED_ON_TARGET",
+        "requiredItemId": "rusty_lever_unpulled",
+        "requiredTargetId": "rusty_lever_unpulled"
+      },
+      "successMessage": "With a grinding sound, the bolt on the northern door slides back.",
+      "failureMessage": "Nothing happens.",
+      "alreadySolvedMessage": "The lever has already been pulled and the door is unlocked.",
+      "effectsOnSolve": [
+        {
+          "type": "UNLOCK_EXIT",
+          "targetRoomId": "antechamber",
+          "exitDirection": "north"
+        }
+      ],
+      "setsFlagOnSolve": "antechamber_door_unlocked",
+      "setsFlagValueOnSolve": "true"
+    },
+    "lighting_puzzle": {
+      "id": "lighting_puzzle",
+      "description": "The brazier needs to be lit.",
+      "solutionCondition": {
+        "type": "ITEM_USED_ON_TARGET",
+        "requiredItemId": "torch_unlit",
+        "requiredTargetId": "strange_brazier"
+      },
+      "successMessage": "As the brazier blazes to life, a hidden compartment in the base opens, revealing a brass key!",
+      "failureMessage": "You need something to light the brazier.",
+      "alreadySolvedMessage": "The brazier is already lit.",
+      "effectsOnSolve": [
+        {
+          "type": "SPAWN_ITEM",
+          "targetRoomId": "hall_of_echoes",
+          "itemIdToSpawnOrRemove": "brass_key"
+        }
+      ],
+      "setsFlagOnSolve": "brazier_lit",
+      "setsFlagValueOnSolve": "true"
+    }
+  },
+  "endConditions": [
+    {
+      "type": "WIN",
+      "message": "With the golden idol in hand and sunlight on your face, you triumphantly exit the Obsidian Labyrinth!",
+      "criteria": [
+        {
+          "type": "PLAYER_IN_ROOM",
+          "roomId": "exit"
+        },
+        {
+          "type": "PLAYER_HAS_ITEM",
+          "itemId": "golden_idol"
+        }
+      ]
+    }
+  ],
+  "globalFlags": {
+    "torch_lit": "false",
+    "antechamber_door_unlocked": "false",
+    "brazier_lit": "false"
+  }
+}
