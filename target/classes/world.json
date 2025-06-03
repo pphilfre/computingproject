@@ -1,8 +1,8 @@
 {
   "gameInfo": {
-    "gameTitle": "The Labyrinth",
+    "gameTitle": "The Obsidian Labyrinth",
     "version": "1.0",
-    "welcomeMessage": "Welcome, adventurer, to the Labyrinth! Explore the mysterious chambers, solve ancient puzzles, and find your way out before it's too late.",
+    "welcomeMessage": "Welcome, adventurer, to the Obsidian Labyrinth! Explore the mysterious chambers, solve ancient puzzles, and find your way out before it's too late.",
     "helpText": "Commands:\n- GO [direction]: Move in a direction (north, south, east, west, up, down)\n- TAKE [item]: Pick up an item\n- DROP [item]: Drop an item from your inventory\n- USE [item] ON [target]: Use an item on something\n- EXAMINE [object]: Look closely at an object\n- TALK TO [npc]: Talk to a character\n- COMBINE [item1] AND [item2]: Combine two items\n- INVENTORY: Show what you're carrying\n- LOOK: Look around\n- SAVE [name]: Save your game\n- LOAD [name]: Load a saved game\n- HELP: Show this help text\n- QUIT: Exit the game"
   },
   "playerStart": {
